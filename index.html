@@ -3,304 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>babybloo's Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>My Personal Website</title>
     <style>
-        /* General Styling */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #000000;
-            color: white;
-            text-align: center;
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --accent-color: #f0f0f0;
+            --particle-color: #000000;
+        }
+
+        [data-theme='dark'] {
+            --bg-color: #121212;
+            --text-color: #ffffff;
+            --accent-color: #1e1e1e;
+            --particle-color: #ffffff;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            position: relative;
-            min-height: 100vh;
-            padding-bottom: 70px; /* Add space for footer */
+            box-sizing: border-box;
+            transition: background-color 0.5s, color 0.5s;
         }
 
-        /* Background Image */
-        .background-image {
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: all 0.5s ease;
+            overflow: hidden;
+        }
+
+        #particleCanvas {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100vh;
-            background: url('Images/zzzz.png') no-repeat center center;
-            background-size: cover;
-            opacity: 0.1;
             z-index: -1;
-        }
-
-        /* Title */
-        .title {
-            margin: 30px 0;
-            font-size: 2.5rem;
-        }
-
-        /* Grid Layout */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            justify-items: center;
-        }
-
-        /* Card Styling */
-        .card {
-            background-color: #1e1e1e;
-            border: 2px solid #333;
-            border-radius: 10px;
-            overflow: hidden;
-            width: 320px;
-            transition: transform 0.3s, border 0.3s;
-            text-decoration: none; /* Remove underline */
-            color: white; /* Reset link color */
-            display: block;
-        }
-
-        .card img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Info Box */
-        .info {
-            padding: 15px;
-            text-align: left;
-        }
-
-        h2 {
-            margin: 0;
-            font-size: 1.2rem;
-        }
-
-        p {
-            margin: 5px 0;
-            font-size: 0.9rem;
-            color: #aaa;
-        }
-
-        /* New Tag */
-        .new-tag {
-            color: #00b7ff;
-            font-weight: bold;
-        }
-
-        /* Hover Effects */
-        .card:hover {
-            transform: scale(1.05);
-            border-color: #00b7ff;
-        }
-
-        /* Subtitle Box */
-        .subtitle-box {
-            background-color: rgba(30, 30, 30, 0.5);
-            border: 2px solid #333;
-            border-radius: 20px;
-            margin: 40px auto;
-            padding: 20px;
-            width: 50%;
-            cursor: pointer;
-            text-align: center;
-            overflow: hidden;
-            transition: max-height 0.5s ease-in-out, padding 0.5s;
-            max-height: 50px;
-        }
-
-        .subtitle-box:hover {
-            max-height: 500px;
-        }
-
-        .subtitle-box:hover .paragraph-text {
-            max-height: 200px;
-            opacity: 1;
-        }
-
-        .subtitle-box:hover {
-            padding: 20px;
-        }
-
-        .subtitle-box .paragraph-text {
-            font-size: 1rem;
-            color: #ccc;
-            max-height: 0;
-            opacity: 0;
-            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
-        }
-        
-        /* Footer Styling */
-        .footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background-color: #1e1e1e;
-            border-top: 2px solid #333;
-            padding: 15px 0;
-            text-align: center;
-        }
-        
-        .footer p {
-            margin: 5px 0;
-            font-size: 0.9rem;
-            color: #aaa;
-        }
-        
-        .footer a {
-            color: #00b7ff;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer a:hover {
-            color: white;
-        }
-
-        /* Loading Screen Styles */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background-color: #000000;
+            pointer-events: none;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 1000;
+            transition: top 0.3s ease;
+        }
+
+        .name-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
-            opacity: 1;
-            transition: opacity 1s ease-out;
+            height: 50vh;
+            text-align: center;
         }
 
-        #loading-text {
-            font-size: 4rem;
+        .name {
+            font-size: 5rem;
             font-weight: bold;
-            color: white;
-            opacity: 0;
-            animation: fadeIn 1s ease-in forwards, 
-                       colorFlash1 0.2s ease-in 2s forwards,
-                       colorFlash2 0.2s ease-in 2.5s forwards,
-                       fadeOut 1s ease-out 3.5s forwards;
+            transition: all 0.3s ease;
+            z-index: 10;
+            position: relative;
         }
 
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        .name:hover {
+            transform: scale(1.05);
+            text-shadow: 0 10px 15px rgba(0,0,0,0.2);
         }
 
-        @keyframes colorFlash1 {
-            0% { color: white; }
-            50% { color: #00b7ff; }
-            100% { color: white; }
+        .nav-bar {
+            position: fixed;
+            top: -50px;
+            left: 0;
+            width: 100%;
+            background: var(--accent-color);
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            transition: top 0.3s;
+            z-index: 999;
         }
 
-        @keyframes colorFlash2 {
-            0% { color: white; }
-            50% { color: #00b7ff; }
-            100% { color: white; }
-        }
-
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        /* Hide main content initially */
-        #main-content {
-            opacity: 0;
-            transition: opacity 1s ease-in;
+        .nav-bar a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div id="loading-text">babybloo</div>
-    </div>
+    <canvas id="particleCanvas"></canvas>
+    
+    <button class="theme-toggle">Toggle Theme</button>
 
-    <!-- Main Content (wrapping your existing content) -->
-    <div id="main-content">
-        <div class="background-image"></div>
-        
-        <h1 class="title">babybloo's Portfolio</h1>
-        <h2 class="subtitle">all artwork is from 2024 - present</h2>
-        
-        <div class="grid">
-            <a href="" target="_blank" class="card">
-                <img src="Images/New Project.png" alt="Poxel.io Renders">
-                <div class="info">
-                    <h2>Poxel.io</h2>
-                    <p>Pre Release Promotion Artwork - <span class="new-tag">new</span></p>
-                </div>
-            </a>
+    <nav class="nav-bar">
+        <a href="#about">About</a>
+        <a href="https://1babybloo1.github.io/clanboard/" target="_blank">Poxel Clanboard</a>
+        <a href="https://behance.net/jbgfx" target="_blank">Portfolio</a>
+    </nav>
 
-            <a href="https://www.behance.net/gallery/205749025/Kourio-Art" target="_blank" class="card">
-                <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/dea3ee205749025.677b94627b7b2.png" alt="Kour.io">
-                <div class="info">
-                    <h2>Kour.io</h2>
-                    <p>In Game Promotion Art</p>
-                </div>
-            </a>
-
-            <a href="https://www.behance.net/gallery/199757213/Kirka" target="_blank" class="card">
-                <img src="Images/kirka.png" alt="Kirka.io Images">
-                <div class="info">
-                    <h2>Kirka.io</h2>
-                    <p>Kirka Related artwork</p>
-                </div>
-            </a>
-
-            <a href="https://www.behance.net/gallery/167504713/Krunker-GFX-Julink-Inspired-Artwork" target="_blank" class="card">
-                <img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/1b7c46167504713.66fe7599e7d5c.png" alt="Krunker GFX">
-                <div class="info">
-                    <h2>Krunker.io</h2>
-                    <p>Skills Development Project</p>
-                </div>
-            </a>
-        </div>
-
-        <!-- Subtitle Box -->
-        <div class="subtitle-box">
-            <h2 class="subtitle">About My Work</h2>
-            <p class="info-text">The journey began in early lockdown, 2020 - 2021. I ventured into rendering basic images based off of an io game (krunker.io) that was big at the time. I continued to make images, inspried myself and joined behance. This was the place that I was to upload my artwork. I wasn't great, but I wasn't too bad. Looking back now though I can confirm that I was god awful. <br> By the time it was 2022, I had gained a bit of experience and decided to try a different game. I looked around for different games that I thought looked good. Nothing. <br> Throughout this time I attempted to strengthen my raw photoshop skills. I took upon pasting png's of random things and pasting things into a photoshop document and blending and finding out new techniques. <br> Around 2023 - 2024, I was doing Kirka and Kour artwork. Kour was a newly released game by a company called Legion Platforms. The developers migrated from Krunker near it's death. I found the assets and started making images using them. I'm kind of skipping a period where I developed my artwork a lot. Before this I moved from randomly photoshopping images to expanding my knowledge in image making. I analysed other IO game artists such as Hishe, 14Julink (official Krunker 3D artist at the time), and others, seeing their techniques. This helped a lot. I was in love with a type of style that included, soft vibrant colours, with a lot of soft shadows and cartoonish style. <br> It took me about 6 months in 2024 to get to this desired skill right. Anyways, after exploring the Kour movement, I went to doing Kirka.io, which was quite successful. This was almost the point of my peak. After this I decided to compete with my younger self and recreate the photoshopped images. To be honest, my younger self won. Anyways. I'm currently working on a project for a new game that is in development. Apart from that I don't know what else to say about my journey. <br></p>
-        </div>
-        
-        <!-- Footer -->
-        <footer class="footer">
-            <p>Copyright &copy; babybloo 2024. All rights reserved.</p>
-            <p>Portfolio | <a href="mailto:ctrixdesignsofficial@gmail.com">trixdesignsofficial@gmail.com</a> | <a href="https://1babybloo1.itch.io/clanboard" target="_blank">Poxel Clan Board</a></p>
-        </footer>
+    <div class="name-container">
+        <h1 class="name">babybloo</h1>
     </div>
 
     <script>
-        // Your existing expandBox and shrinkBox functions
-        function expandBox() {
-            document.querySelector(".subtitle-box").style.maxHeight = "500px";
-            document.querySelector(".subtitle-box h2").style.opacity = "1";
-            document.querySelector(".subtitle-box p").style.maxHeight = "200px";
-            document.querySelector(".subtitle-box p").style.opacity = "1";
-        }
+        class ParticleSystem {
+            constructor(canvas, options = {}) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.particles = [];
+                this.options = {
+                    particleCount: 200,
+                    particleColor: '#000000',
+                    particleSize: 1.5,
+                    mouseInfluence: 50,
+                    ...options
+                };
+                this.mouse = { x: 0, y: 0 };
 
-        function shrinkBox() {
-            document.querySelector(".subtitle-box").style.maxHeight = "50px";
-            document.querySelector(".subtitle-box p").style.maxHeight = "0";
-            document.querySelector(".subtitle-box p").style.opacity = "0";
-        }
+                this.resize();
+                this.init();
+                this.bindEvents();
+            }
 
-        // Loading Screen Script
-        document.addEventListener("DOMContentLoaded", function() {
-            // After the loading animation completes
-            setTimeout(function() {
-                document.getElementById("loading-screen").style.opacity = "0";
-                document.getElementById("main-content").style.opacity = "1";
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
                 
-                // Remove loading screen from DOM after transition
-                setTimeout(function() {
-                    document.getElementById("loading-screen").style.display = "none";
-                }, 1000);
-            }, 4500); // Total animation time (4.5 seconds)
+                // Reinitialize particles when window is resized
+                this.init();
+            }
+
+            init() {
+                this.particles = Array.from({ length: this.options.particleCount }, () => {
+                    // Distribute particles more evenly across the screen
+                    return {
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        vx: (Math.random() - 0.5) * 0.3,
+                        vy: Math.abs(Math.random() * 0.5), // Ensure downward movement
+                        opacity: Math.random() * 0.5 + 0.3,
+                        size: Math.random() * this.options.particleSize + 0.5,
+                        rotation: Math.random() * Math.PI * 2
+                    };
+                });
+            }
+
+            bindEvents() {
+                window.addEventListener('resize', () => this.resize());
+                window.addEventListener('mousemove', (e) => {
+                    this.mouse.x = e.clientX;
+                    this.mouse.y = e.clientY;
+                });
+            }
+
+            drawDustParticle(particle) {
+                this.ctx.save();
+                this.ctx.globalAlpha = particle.opacity;
+                this.ctx.translate(particle.x, particle.y);
+                this.ctx.rotate(particle.rotation);
+
+                // Draw a more organic, dust-like shape
+                this.ctx.beginPath();
+                this.ctx.moveTo(0, -particle.size);
+                this.ctx.quadraticCurveTo(particle.size/2, 0, 0, particle.size);
+                this.ctx.quadraticCurveTo(-particle.size/2, 0, 0, -particle.size);
+
+                this.ctx.fill();
+                this.ctx.restore();
+            }
+
+            update() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.fillStyle = this.options.particleColor;
+
+                this.particles.forEach(particle => {
+                    // Calculate distance from mouse
+                    const dx = this.mouse.x - particle.x;
+                    const dy = this.mouse.y - particle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    // Subtle mouse influence
+                    if (distance < this.options.mouseInfluence) {
+                        const angle = Math.atan2(dy, dx);
+                        const force = (this.options.mouseInfluence - distance) / this.options.mouseInfluence;
+                        particle.x -= Math.cos(angle) * force;
+                        particle.y -= Math.sin(angle) * force * 0.5;
+                    }
+
+                    // Subtle movement
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+
+                    // Rotate slightly
+                    particle.rotation += (Math.random() - 0.5) * 0.1;
+
+                    // Boundary wrapping
+                    if (particle.x < 0) particle.x = this.canvas.width;
+                    if (particle.x > this.canvas.width) particle.x = 0;
+                    if (particle.y > this.canvas.height) particle.y = 0;
+
+                    // Draw particle
+                    this.drawDustParticle(particle);
+                });
+
+                requestAnimationFrame(() => this.update());
+            }
+        }
+
+        // Theme Toggle
+        const themeToggle = document.querySelector('.theme-toggle');
+        const body = document.body;
+        const particleCanvas = document.getElementById('particleCanvas');
+
+        // Create particle system
+        let particleSystem;
+
+        function initParticleSystem() {
+            const isDarkTheme = body.getAttribute('data-theme') === 'dark';
+            const particleColor = isDarkTheme ? '#ffffff' : '#000000';
+
+            // Remove existing particle system if it exists
+            if (particleSystem) {
+                // Clear any existing event listeners or animation frames
+            }
+
+            // Create new particle system
+            particleSystem = new ParticleSystem(particleCanvas, {
+                particleColor: particleColor,
+                particleCount: 250,
+                particleSize: 2,
+                mouseInfluence: 80
+            });
+
+            // Start animation
+            particleSystem.update();
+        }
+
+        // Initial particle system
+        initParticleSystem();
+
+        // Theme toggle event
+        themeToggle.addEventListener('click', () => {
+            body.setAttribute('data-theme', 
+                body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+            );
+            
+            // Reinitialize particle system with new color
+            initParticleSystem();
+        });
+
+        // Navigation Bar Hover
+        const navBar = document.querySelector('.nav-bar');
+        document.addEventListener('mousemove', (e) => {
+            if (e.clientY <= 50) {
+                navBar.style.top = '0';
+                themeToggle.style.top = '70px';
+            } else {
+                navBar.style.top = '-50px';
+                themeToggle.style.top = '20px';
+            }
         });
     </script>
 </body>
