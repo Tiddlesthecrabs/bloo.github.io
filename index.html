@@ -127,10 +127,10 @@
                 this.ctx = canvas.getContext('2d');
                 this.particles = [];
                 this.options = {
-                    particleCount: 200,
+                    particleCount: 300,
                     particleColor: '#000000',
-                    particleSize: 1.5,
-                    mouseInfluence: 50,
+                    particleSize: 2.5,
+                    mouseInfluence: 100,
                     ...options
                 };
                 this.mouse = { x: 0, y: 0 };
@@ -150,14 +150,13 @@
 
             init() {
                 this.particles = Array.from({ length: this.options.particleCount }, () => {
-                    // Distribute particles more evenly across the screen
                     return {
                         x: Math.random() * this.canvas.width,
                         y: Math.random() * this.canvas.height,
                         vx: (Math.random() - 0.5) * 0.3,
-                        vy: Math.abs(Math.random() * 0.5), // Ensure downward movement
-                        opacity: Math.random() * 0.5 + 0.3,
-                        size: Math.random() * this.options.particleSize + 0.5,
+                        vy: Math.abs(Math.random() * 0.5),
+                        opacity: Math.random() * 0.7 + 0.3, // Increased base opacity
+                        size: Math.random() * this.options.particleSize + 1,
                         rotation: Math.random() * Math.PI * 2
                     };
                 });
@@ -173,11 +172,21 @@
 
             drawDustParticle(particle) {
                 this.ctx.save();
+                
+                // Create a soft glow effect
+                const gradient = this.ctx.createRadialGradient(
+                    0, 0, 0, 
+                    0, 0, particle.size * 2
+                );
+                gradient.addColorStop(0, `rgba(${this.hexToRgb(this.options.particleColor)}, ${particle.opacity})`);
+                gradient.addColorStop(1, `rgba(${this.hexToRgb(this.options.particleColor)}, 0)`);
+
                 this.ctx.globalAlpha = particle.opacity;
                 this.ctx.translate(particle.x, particle.y);
                 this.ctx.rotate(particle.rotation);
 
-                // Draw a more organic, dust-like shape
+                // Draw a more organic, dust-like shape with gradient
+                this.ctx.fillStyle = gradient;
                 this.ctx.beginPath();
                 this.ctx.moveTo(0, -particle.size);
                 this.ctx.quadraticCurveTo(particle.size/2, 0, 0, particle.size);
@@ -187,9 +196,17 @@
                 this.ctx.restore();
             }
 
+            // Helper method to convert hex to RGB
+            hexToRgb(hex) {
+                const bigint = parseInt(hex.slice(1), 16);
+                const r = (bigint >> 16) & 255;
+                const g = (bigint >> 8) & 255;
+                const b = bigint & 255;
+                return `${r}, ${g}, ${b}`;
+            }
+
             update() {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.ctx.fillStyle = this.options.particleColor;
 
                 this.particles.forEach(particle => {
                     // Calculate distance from mouse
@@ -242,12 +259,12 @@
                 // Clear any existing event listeners or animation frames
             }
 
-            // Create new particle system
+            // Create new particle system with enhanced visibility
             particleSystem = new ParticleSystem(particleCanvas, {
                 particleColor: particleColor,
-                particleCount: 250,
-                particleSize: 2,
-                mouseInfluence: 80
+                particleCount: 300,  // Slightly increased particle count
+                particleSize: 2.5,   // Slightly larger particles
+                mouseInfluence: 100  // Increased mouse influence
             });
 
             // Start animation
