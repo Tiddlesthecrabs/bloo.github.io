@@ -47,7 +47,7 @@
 
         .theme-toggle {
             position: fixed;
-            top: 20px;
+            bottom: 20px;
             right: 20px;
             background: var(--accent-color);
             border: none;
@@ -55,7 +55,12 @@
             cursor: pointer;
             border-radius: 5px;
             z-index: 1000;
-            transition: top 0.3s ease;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .name-container {
@@ -267,10 +272,8 @@
         document.addEventListener('mousemove', (e) => {
             if (e.clientY <= 50) {
                 navBar.style.top = '0';
-                themeToggle.style.top = '70px';
             } else {
                 navBar.style.top = '-50px';
-                themeToggle.style.top = '20px';
             }
         });
     </script>
